@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace deadAntsPairProg
 {
-    internal class Program
+    public static class Program
     {
         static void Main(string[] args)
         {
@@ -15,8 +11,11 @@ namespace deadAntsPairProg
             Console.WriteLine("The amount of dead ants is: " + deadAnts);
         }
 
-        static int DeadCounterAnts(string ants)
+        public static int DeadCounterAnts(string ants)
         {
+            if (string.IsNullOrEmpty(ants))
+                return 0;
+            
             int heads = 0;
             int bodies = 0;
             int tails = 0;
