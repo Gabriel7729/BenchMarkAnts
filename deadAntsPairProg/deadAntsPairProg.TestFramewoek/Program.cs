@@ -1,40 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.VisualStudio.TestPlatform.TestHost;
+using System.Diagnostics;
 
-namespace deadAntsPairProg.TestFramewoek
+namespace AntsV2.Test
 {
-    public static class Program
+    public class DeadAntsTest
     {
-        public static int DeadCounterAnts(string ants)
+        [Fact]
+        public void ComparePerformance()
         {
-            if (string.IsNullOrEmpty(ants))
-                return 0;
+            string testString = "...ant...ant..nat.ant.t..ant...ant..ant..ant.anant..an";
 
-            int heads = 0;
-            int bodies = 0;
-            int tails = 0;
-            int deadAnts = 0;
+            var stopwatch = Stopwatch.StartNew();
+            Program.DeadCounterAnts(testString);
+            stopwatch.Stop();
+            var timeForDeadCounterAnts = stopwatch.Elapsed.TotalMilliseconds;
 
-            for (int i = 0; i < ants.Length; i++)
-            {
-                if (ants[i] == 'a' && ants[i + 1] == 'n' && ants[i + 2] == 't')
-                {
-                    i = i + 2;
-                    continue;
-                }
+            stopwatch.Restart();
+            Program.DeadCounterAntsV2(testString);
+            stopwatch.Stop();
+            var timeForDeadCounterAntsV2 = stopwatch.Elapsed.TotalMilliseconds;
 
-                if (ants[i] == 'a') heads++;
-                else if (ants[i] == 'n') bodies++;
-                else if (ants[i] == 't') tails++;
-            }
+            Assert.True(timeForDeadCounterAntsV2 < timeForDeadCounterAnts);
+        }
 
-            deadAnts = Math.Max(heads, bodies);
-            deadAnts = Math.Max(deadAnts, tails);
+        [Fact]
+        public void ShouldValidateAllAntsAlive()
+        {
+            Assert.Equal(0, Program.DeadCounterAntsV2("ant ant ant"));
+        }
 
-            return deadAnts;
+        [Fact]
+        public void ShouldValidateAllAntsAreDead()
+        {
+            Assert.Equal(2, Program.DeadCounterAntsV2("atn n"));
+        }
+
+        [Fact]
+        public void ShouldValidateMoreHeads()
+        {
+            Assert.Equal(4, Program.DeadCounterAnts("a a a a n t t t t"));
+        }
+
+        [Fact]
+        public void ShouldValidateMoreTails()
+        {
+            Assert.Equal(5, Program.DeadCounterAntsV2("t t t t t a n"));
+        }
+
+        [Fact]
+        public void ShouldValidateIfStringOrNull()
+        {
+            Assert.Equal(0, Program.DeadCounterAntsV2(""));
+            Assert.Equal(0, Program.DeadCounterAntsV2(null));
         }
     }
 }

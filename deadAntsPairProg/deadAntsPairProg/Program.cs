@@ -1,31 +1,33 @@
 ﻿using System;
+using System.Linq;
 
-namespace deadAntsPairProg
+namespace AntsV2
 {
     public static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            string antChain = "...ant...ant..nat.ant.t..ant...ant..ant..ant.anant..t";
-            int deadAnts = DeadCounterAnts(antChain);
-            Console.WriteLine("The amount of dead ants is: " + deadAnts);
+            string antsTrial = "...ant...ant..nat.ant.t..ant...ant..ant..ant.anant..t";
+
+            int deadAnts = DeadCounterAntsV2(antsTrial);
+            Console.WriteLine("Dead ants: " + deadAnts);
         }
 
-        public static int DeadCounterAnts(string ants)
+        public static int DeadCounterAntsV2(string ants)
         {
             if (string.IsNullOrEmpty(ants))
                 return 0;
-            
+
             int heads = 0;
             int bodies = 0;
             int tails = 0;
-            int deadAnts = 0;
+            int deadAnts;
 
             for (int i = 0; i < ants.Length; i++)
             {
-                if (ants[i] == 'a' && ants[i+1] == 'n' && ants[i+2] == 't')
+                if (ants[i] == 'a' && ants[i + 1] == 'n' && ants[i + 2] == 't')
                 {
-                    i = i + 2;
+                    i += 2;
                     continue;
                 }
 
@@ -38,6 +40,20 @@ namespace deadAntsPairProg
             deadAnts = Math.Max(deadAnts, tails);
 
             return deadAnts;
+        }
+
+        public static int DeadCounterAnts(string antsTrial)
+        {
+            if (string.IsNullOrEmpty(antsTrial))
+                return 0;
+
+            string replaceAnts = antsTrial.Replace("ant", string.Empty);
+
+            int aCount = replaceAnts.Count(x => x == 'a');
+            int nCount = replaceAnts.Count(x => x == 'n');
+            int tCount = replaceAnts.Count(x => x == 't');
+
+            return Math.Max(aCount, Math.Max(nCount, tCount));
         }
     }
 }
