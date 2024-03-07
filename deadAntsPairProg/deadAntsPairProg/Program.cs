@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BenchmarkDotNet.Running;
+using deadAntsPairProg;
+using System;
 using System.Linq;
 
 namespace AntsV2
@@ -8,10 +10,13 @@ namespace AntsV2
         public static void Main(string[] args)
         {
             //string antsTrial = "...ant...ant..nat.ant.t..ant...ant..ant..ant.anant..t";
-            string antsTrial = "...ant...ant..nat.ant.t..ant...ant..ant..ant.anan";
+            //string antsTrial = "...ant...ant..nat.ant.t..ant...ant..ant..ant.anan";
 
-            int deadAnts = DeadCounterAntsV2(antsTrial);
-            Console.WriteLine("Dead ants: " + deadAnts);
+            //int deadAnts = DeadCounterAntsV2(antsTrial);
+            //Console.WriteLine("Dead ants: " + deadAnts);
+
+            var summary = BenchmarkRunner.Run<BenchMarkAnts>();
+            Console.ReadKey();
         }
 
         public static int DeadCounterAntsV2(string ants)
