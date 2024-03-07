@@ -7,7 +7,8 @@ namespace AntsV2
     {
         public static void Main(string[] args)
         {
-            string antsTrial = "...ant...ant..nat.ant.t..ant...ant..ant..ant.anant..t";
+            //string antsTrial = "...ant...ant..nat.ant.t..ant...ant..ant..ant.anant..t";
+            string antsTrial = "...ant...ant..nat.ant.t..ant...ant..ant..ant.anan";
 
             int deadAnts = DeadCounterAntsV2(antsTrial);
             Console.WriteLine("Dead ants: " + deadAnts);
@@ -25,15 +26,21 @@ namespace AntsV2
 
             for (int i = 0; i < ants.Length; i++)
             {
-                if (ants[i] == 'a' && ants[i + 1] == 'n' && ants[i + 2] == 't')
-                {
-                    i += 2;
-                    continue;
-                }
-
                 if (ants[i] == 'a') heads++;
                 else if (ants[i] == 'n') bodies++;
                 else if (ants[i] == 't') tails++;
+
+                if (i >= 2 && ants[i - 2] == 'a' && ants[i - 1] == 'n' && ants[i] == 't')
+                {
+                    heads--;
+                    bodies--;
+                    tails--;
+                    continue;
+                }
+
+                //if (ants[i] == 'a') heads++;
+                //else if (ants[i] == 'n') bodies++;
+                //else if (ants[i] == 't') tails++;
             }
 
             deadAnts = Math.Max(heads, bodies);
